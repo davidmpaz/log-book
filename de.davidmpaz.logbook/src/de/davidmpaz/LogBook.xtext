@@ -1,0 +1,55 @@
+grammar de.davidmpaz.LogBook with org.eclipse.xtext.common.Terminals
+
+generate logBook "http://www.davidmpaz.de/LogBook"
+
+Model:
+	entries+=LogEntry*;
+
+/**
+ * Date model for Dates like 1.1.2023 == 1 January 2023
+ */
+Date:
+	day=Day '.' month=Month '.' year=Year
+;
+Day : INT;
+Month : INT;
+Year : INT;
+
+/**
+ * Time booking entry in Log Book
+ */
+LogEntry:
+	'day' date=Date
+	'{'
+		(tasks += Task)*
+	'}'
+;
+
+/**
+ * Tasks to done in a normal day of work
+ *
+ * taskId:	Redmine Task id
+ * time:	Always in Hours, means 30 Minutes == 0,5 Hour
+ * act:		Activity to provide to Redmine
+ * desc:	Text describing what was done
+ */
+Task:
+	'#' id=INT time=NumberLiteral activity=Activity description=STRING
+;
+
+/**
+ * Allow for integer and float
+ */
+NumberLiteral:
+    value=INT ('.' decimal = INT)?
+;
+
+/**
+ * Kind of Activities a task can be, specific to Redmine
+ */
+enum Activity:
+	meeting		= 'Meeting' 		|
+	jourfix		= 'Jourfix' 		|
+	developent	= 'Development'		|
+	course		= 'Course'
+;

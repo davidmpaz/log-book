@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<templates>
+	<template
+		id="de.davidmpaz.logbook.jday" autoinsert="true"
+		context="de.davidmpaz.LogBook.Day" deleted="false"
+		description="Day of work with Jourfix" enabled="true" 
+		name="jday"> ${dd}.${mm}.${year} {
+	#123 1.0 Jourfix "Team meeting"
+	${cursor}
+}
+	</template>
+	<template
+		id="de.davidmpaz.logbook.day" autoinsert="true"
+		context="de.davidmpaz.LogBook.Day" deleted="false"
+		description="Day of work" enabled="true" 
+		name="day"> ${dd}.${mm}.${year} {
+	${cursor}
+}
+	</template>
+	<template id="de.davidmpaz.logbook.jfix" autoinsert="true"
+		context="de.davidmpaz.LogBook.Task" deleted="false"
+		description="Jourfix task" enabled="true" 
+		name="jfix">#123 1.0 Jourfix "Team meeting"${cursor}
+	</template>
+	<template id="de.davidmpaz.logbook.task" autoinsert="true"
+		context="de.davidmpaz.LogBook.Task" deleted="false"
+		description="Generic Task" enabled="true" 
+		name="task">#${id} ${hour} ${activity} "${description}"${cursor}
+	</template>
+</templates>

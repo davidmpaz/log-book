@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: de.davidmpaz.logbook.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: de.davidmpaz.logbook.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: de.davidmpaz.logbook.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: de.davidmpaz.logbook,
+ de.davidmpaz.logbook.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.ui.codemining;resolution:=optional
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: de.davidmpaz.ui.quickfix,
+ de.davidmpaz.ui.contentassist,
+ de.davidmpaz.logbook.ui.internal
+Bundle-Activator: de.davidmpaz.logbook.ui.internal.LogbookActivator
