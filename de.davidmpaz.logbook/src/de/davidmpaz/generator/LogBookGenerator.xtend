@@ -7,19 +7,61 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import de.davidmpaz.logBook.LogEntry
+import de.davidmpaz.logBook.Task
+import de.davidmpaz.logBook.Date
+import de.davidmpaz.logBook.NumberLiteral
 
 /**
  * Generates code from your model files on save.
- * 
+ *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class LogBookGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-//		fsa.generateFile('greetings.txt', 'People to greet: ' + 
-//			resource.allContents
-//				.filter(Greeting)
-//				.map[name]
-//				.join(', '))
+		fsa.generateFile('redmine.sh', resource.doGenerateEntries)
 	}
+
+	def doGenerateEntries(Resource resource) {
+		val entries = resource.allContents.filter(LogEntry).toIterable
+		var result = ''
+		result += doGenerateHeader
+
+		for (entry : entries) {
+			result += entry.doGenerate
+		}
+
+		return result
+	}
+
+	def doGenerate(LogEntry entry) '''
+	# «entry.date.doGenerate»
+	«FOR task: entry.tasks SEPARATOR '\n'»
+	«task.doGenerate»
+	«ENDFOR»
+	'''
+
+	def doGenerate(Task task)'''
+	# id: «task.id», time: «task.time.doGenerate»
+	# «task.description»
+	curl -X POST -d {} [url here]
+	'''
+
+	def doGenerate(Date date)'''
+	«date.day».«date.month».«date.year»
+	'''
+
+	def doGenerate(NumberLiteral nl)'''
+	«nl.value».«nl.decimal» «IF nl.value > 1» Hours«ELSE» Hour«ENDIF»
+	'''
+
+	def doGenerateHeader()'''
+	#!/bin/bash
+
+	#
+	# Commands to log time in Redmine
+	#
+
+	'''
 }
