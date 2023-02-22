@@ -3,9 +3,20 @@
  */
 package de.davidmpaz;
 
+import de.davidmpaz.importer.Importer;
+import de.davidmpaz.importer.RedmineImporter;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 public class LogBookRuntimeModule extends AbstractLogBookRuntimeModule {
+	
+	/**
+	 * Binds the default importer
+	 * 
+	 * @return
+	 */
+	public Class<? extends Importer> bindImporter() {
+		return RedmineImporter.class;
+	}
 }

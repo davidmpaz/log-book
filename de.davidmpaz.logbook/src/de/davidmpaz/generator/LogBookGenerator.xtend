@@ -20,7 +20,8 @@ import de.davidmpaz.logBook.NumberLiteral
 class LogBookGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		fsa.generateFile('redmine.sh', resource.doGenerateEntries)
+		val fileName = resource.contents.get(0).eResource.getURI.trimFileExtension.lastSegment;
+		fsa.generateFile(fileName + '.sh', resource.doGenerateEntries)
 	}
 
 	def doGenerateEntries(Resource resource) {
@@ -45,7 +46,11 @@ class LogBookGenerator extends AbstractGenerator {
 	def doGenerate(Task task)'''
 	# id: «task.id», time: «task.time.doGenerate»
 	# «task.description»
-	curl -X POST -d {} [url here]
+	curl -X POST \
+	  --location "$BASE_URL/time_entries.json?user_id=$USER_ID" \
+	  -H "Content-Type: application/json" \
+	  --basic --user "$USER:$PASS" \
+	  -d {}
 	'''
 
 	def doGenerate(Date date)'''
@@ -62,6 +67,11 @@ class LogBookGenerator extends AbstractGenerator {
 	#
 	# Commands to log time in Redmine
 	#
+	# Assume exported variables
+	# $USER: user name in redmine
+	# $PASS: user password in redmine
+	# $USER_ID: user id on server, used to filter queries
+	# $BASE_URL: url of server
 
 	'''
 }

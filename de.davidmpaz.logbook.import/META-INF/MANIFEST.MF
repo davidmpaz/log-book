@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Import
+Bundle-SymbolicName: de.davidmpaz.logbook.import
+Bundle-Version: 1.0.0
+Export-Package: org.json
+Automatic-Module-Name: de.davidmpaz.logbook.import
+Bundle-RequiredExecutionEnvironment: JavaSE-19

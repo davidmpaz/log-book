@@ -1,0 +1,6 @@
+### Get time booked
+GET http://{{ host }}/time_entries.json?user_id={{ user_id }}
+Authorization: Basic {{ user }} {{ pass }}
+Content-Type: application/json
+
+###
