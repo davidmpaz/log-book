@@ -32,7 +32,7 @@ class LogBookFormatter extends AbstractFormatter2 {
 			task.format
 		}
 	}
-	
+
 	def dispatch void format(Task task, extension IFormattableDocument document) {
 		task.regionFor.keyword("#").surround[noSpace]
 		task.time.format

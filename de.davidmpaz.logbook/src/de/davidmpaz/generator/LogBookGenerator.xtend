@@ -44,7 +44,7 @@ class LogBookGenerator extends AbstractGenerator {
 	'''
 
 	def doGenerate(Task task)'''
-	# id: «task.id», time: «task.time.doGenerate»
+	# id: «task.taskId», time: «task.time.doGenerate»
 	# «task.description»
 	curl -X POST \
 	  --location "$BASE_URL/time_entries.json?user_id=$USER_ID" \

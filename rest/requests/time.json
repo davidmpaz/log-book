@@ -1,0 +1,99 @@
+{
+  "time_entries": [
+    {
+      "id": 54198,
+      "project": {
+        "id": 216814,
+        "name": "cooking diner"
+      },
+      "issue": {
+        "id": 344452
+      },
+      "user": {
+        "id": 533011,
+        "name": "Alexey Lychits"
+      },
+      "activity": {
+        "id": 9,
+        "name": "Development"
+      },
+      "hours": 1.6,
+      "comments": "",
+      "spent_on": "2023-02-20",
+      "created_on": "2023-02-20T15:43:06.000Z",
+      "updated_on": "2023-02-20T15:43:06.000Z"
+    },
+    {
+      "id": 54197,
+      "project": {
+        "id": 216814,
+        "name": "cooking diner"
+      },
+      "issue": {
+        "id": 344452
+      },
+      "user": {
+        "id": 533011,
+        "name": "Alexey Lychits"
+      },
+      "activity": {
+        "id": 8,
+        "name": "Design"
+      },
+      "hours": 0.3,
+      "comments": "",
+      "spent_on": "2023-02-20",
+      "created_on": "2023-02-20T15:42:02.000Z",
+      "updated_on": "2023-02-20T15:42:02.000Z"
+    },
+    {
+      "id": 54196,
+      "project": {
+        "id": 216814,
+        "name": "cooking diner"
+      },
+      "issue": {
+        "id": 344444
+      },
+      "user": {
+        "id": 533011,
+        "name": "Alexey Lychits"
+      },
+      "activity": {
+        "id": 9,
+        "name": "Development"
+      },
+      "hours": 0.8,
+      "comments": "",
+      "spent_on": "2023-02-20",
+      "created_on": "2023-02-20T15:33:06.000Z",
+      "updated_on": "2023-02-20T15:33:06.000Z"
+    },
+    {
+      "id": 54193,
+      "project": {
+        "id": 216814,
+        "name": "cooking diner"
+      },
+      "issue": {
+        "id": 344444
+      },
+      "user": {
+        "id": 533011,
+        "name": "Alexey Lychits"
+      },
+      "activity": {
+        "id": 9,
+        "name": "Development"
+      },
+      "hours": 0.8,
+      "comments": "",
+      "spent_on": "2023-02-20",
+      "created_on": "2023-02-20T15:32:33.000Z",
+      "updated_on": "2023-02-20T15:32:33.000Z"
+    }
+  ],
+  "total_count": 4,
+  "offset": 0,
+  "limit": 25
+}

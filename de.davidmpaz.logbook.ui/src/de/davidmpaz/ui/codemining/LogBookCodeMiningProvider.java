@@ -31,27 +31,26 @@ public class LogBookCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 
 	@Override
 	protected void createCodeMinings(
-			IDocument document, 
-			XtextResource resource, 
+			IDocument document,
+			XtextResource resource,
 			CancelIndicator indicator,
 			IAcceptor<? super ICodeMining> acceptor
-	) throws BadLocationException {
-		acceptor.accept(createNewLineContentCodeMining(5, " inline annotation "));
+			) throws BadLocationException {
 		addCodeMineForLogEntry(resource, acceptor);
 	}
 
 	/**
 	 * Add code mining for log entry elements
-	 * 
+	 *
 	 * TODO Make this work
-	 * 
+	 *
 	 * @param resource
 	 * @param acceptor
 	 */
 	private void addCodeMineForLogEntry(
 			XtextResource resource,
 			IAcceptor<? super ICodeMining> acceptor
-	) {
+			) {
 		List<LogEntry> allEntries = EcoreUtil2.eAllOfType(resource.getContents().get(0), LogEntry.class);
 		for(LogEntry entry : allEntries) {
 			ICompositeNode node = NodeModelUtils.findActualNodeFor(entry);

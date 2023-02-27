@@ -34,7 +34,7 @@ LogEntry:
  * desc:	Text describing what was done
  */
 Task:
-	'#' id=INT time=NumberLiteral activity=Activity description=STRING
+	'#' taskId=INT time=NumberLiteral activity=Activity description=STRING
 ;
 
 /**

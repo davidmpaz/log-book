@@ -3,24 +3,34 @@
  */
 package de.davidmpaz.validation;
 
+import java.io.File;
 import java.time.Year;
 import java.time.YearMonth;
 
+import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.validation.Check;
 
+import com.google.inject.Inject;
+
+import de.davidmpaz.importer.Properties;
 import de.davidmpaz.logBook.Date;
 import de.davidmpaz.logBook.LogBookPackage;
+import de.davidmpaz.logBook.Model;
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  *
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 public class LogBookValidator extends AbstractLogBookValidator {
 
+	@Inject private IPreferenceStoreAccess preferenceStoreAccess;
+
 	public static final String DUBIOUS_YEAR = "dubiousYear";
-	
+
 	public static final String INVALD_DAY = "invalidDay";
+
+	public static final String INVALD_ISSUE_FILE = "invalidIssuesFile";
 
 	@Check
 	public void checkDate(Date date) {
@@ -32,8 +42,8 @@ public class LogBookValidator extends AbstractLogBookValidator {
 		int day = Integer.parseInt(date.getDay());
 		int maxDays = getMonthMaximumDays(date);
 		String msg = String.format(
-			"Invalid day value %d on date. Enter a value between %d and %d", day, 1, maxDays
-		);
+				"Invalid day value %d on date. Enter a value between %d and %d", day, 1, maxDays
+				);
 
 		if(day < 1 || day > maxDays) {
 			error(msg, LogBookPackage.Literals.DATE__DAY, INVALD_DAY);
@@ -55,16 +65,27 @@ public class LogBookValidator extends AbstractLogBookValidator {
 
 	/**
 	 * Given a Date get the number of maximum days the month has
-	 * 
+	 *
 	 * @param date Date typed by user
 	 * @return
 	 */
 	private int getMonthMaximumDays(Date date) {
 		YearMonth yearMonthObject = YearMonth.of(
-			Integer.parseInt(date.getYear()),
-			Integer.parseInt(date.getMonth())
-		);
+				Integer.parseInt(date.getYear()),
+				Integer.parseInt(date.getMonth())
+				);
 		return yearMonthObject.lengthOfMonth();
 	}
-	
+
+	@Check
+	public void checkIssuesFile(Model model) {
+		String path = preferenceStoreAccess.getPreferenceStore().getString(Properties.PROPERTY_ISSUES_FILE);
+		File file = new File(path);
+		if (!file.exists()) {
+			warning("The issues files used for autocompletion does not exist or it is not configured",
+					LogBookPackage.Literals.MODEL__ENTRIES, INVALD_ISSUE_FILE);
+		}
+
+	}
+
 }

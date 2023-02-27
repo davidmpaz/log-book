@@ -1,6 +1,6 @@
 package de.davidmpaz.importer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,10 +10,10 @@ import de.davidmpaz.logBook.LogEntry;
 import de.davidmpaz.logBook.Model;
 import de.davidmpaz.logBook.Task;
 
-class RedmineImporterTest {
-	
+class RedmineTimeEntriesImporterTest {
+
 	@Inject()
-	Importer importer = new RedmineImporter();
+	ITimeEntriesImporter importer = new RedmineTimeEntriesImporter();
 
 	@Test
 	void test() {
@@ -47,14 +47,14 @@ class RedmineImporterTest {
 				+ "  \"offset\": 0,\n"
 				+ "  \"limit\": 25\n"
 				+ "}";
-		
+
 		Model model = importer.getModelFrom(json);
-		
+
 		LogEntry entry = model.getEntries().get(0);
 		assertEquals(1, model.getEntries().size());
 		assertEquals(1, entry.getTasks().size());
 		Task task = entry.getTasks().get(0);
-		assertEquals(344452, task.getId());
+		assertEquals(344452, task.getTaskId());
 		assertEquals("meeting", task.getActivity().getName());
 		assertEquals(1, task.getTime().getValue());
 		assertEquals(6, task.getTime().getDecimal());

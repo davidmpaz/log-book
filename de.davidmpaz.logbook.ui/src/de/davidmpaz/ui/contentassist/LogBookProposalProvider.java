@@ -3,10 +3,86 @@
  */
 package de.davidmpaz.ui.contentassist;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE.SharedImages;
+import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import com.google.inject.Inject;
+
+import de.davidmpaz.importer.Properties;
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#content-assist
  * on how to customize the content assistant.
  */
 public class LogBookProposalProvider extends AbstractLogBookProposalProvider {
+
+	private final static Logger log = Logger.getLogger(LogBookProposalProvider.class);
+	private final Image task = PlatformUI.getWorkbench().getSharedImages().getImage(SharedImages.IMG_OBJS_TASK_TSK);
+	@Inject private IPreferenceStoreAccess preferenceStoreAccess;
+
+	/**
+	 * Keep list of tasks available for auto completion
+	 */
+	private HashMap<BigInteger, StyledString> tasks;
+
+	@Override
+	public void completeTask_TaskId(
+			EObject model,
+			Assignment assignment,
+			ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor
+			) {
+		if (tasks == null) {
+			try {
+				tasks = getIds();
+			} catch (FileNotFoundException e) {
+				LogBookProposalProvider.log.error(e.getMessage());
+			}
+		}
+
+		for (BigInteger id : tasks.keySet()) {
+			acceptor.accept(createCompletionProposal(id.toString(), tasks.get(id), task, context));
+		}
+
+		super.completeTask_TaskId(model, assignment, context, acceptor);
+	}
+
+	private HashMap<BigInteger, StyledString> getIds() throws FileNotFoundException {
+		String filePath = preferenceStoreAccess.getPreferenceStore().getString(Properties.PROPERTY_ISSUES_FILE);
+		File initialFile = new File(filePath);
+		InputStream is = new FileInputStream(initialFile);
+
+		JSONTokener tokener = new JSONTokener(is);
+		JSONObject obj = new JSONObject(tokener);
+		JSONArray issues = obj.getJSONArray("issues");
+
+		HashMap<BigInteger, StyledString>  result = new HashMap<>();
+		final int n = issues.length();
+		for (int i = 0; i < n; ++i) {
+			final JSONObject issue = issues.getJSONObject(i);
+			BigInteger id = issue.getBigInteger("id");
+			StyledString proposal = new StyledString(id + " | " + issue.getString("subject"));
+			result.put(id, proposal);
+		}
+
+		return result;
+	}
 }

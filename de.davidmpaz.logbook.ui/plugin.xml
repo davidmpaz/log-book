@@ -97,6 +97,13 @@
 			name="Templates">
 			<keywordReference id="de.davidmpaz.ui.keyword_LogBook"/>
 		</page>
+		<page
+			category="de.davidmpaz.LogBook"
+            class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:de.davidmpaz.ui.preferences.ImportPropertyPage"
+            id="de.davidmpaz.LogBook.preferences"
+            name="Import">
+            <keywordReference id="de.davidmpaz.ui.keyword_LogBook"/>
+        </page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">
@@ -430,5 +437,102 @@
 			extension="logtime"
 			type="text">
 		</fileTypes>
+	</extension>
+	<extension
+		point="org.eclipse.ui.newWizards">
+		<category id="de.davidmpaz.ui.category" name="LogBook">
+		</category>
+		<wizard
+			category="de.davidmpaz.ui.category"
+			class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:org.eclipse.xtext.ui.wizard.template.TemplateNewProjectWizard"
+			id="de.davidmpaz.ui.wizard.LogBookNewProjectWizard"
+			name="LogBook Project"
+			icon="icons/new_LogBook_proj.gif"
+			project="true">
+		</wizard>
+	</extension>
+	<extension
+		point="org.eclipse.xtext.ui.projectTemplate">
+		<projectTemplateProvider
+			class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:de.davidmpaz.ui.wizard.LogBookProjectTemplateProvider"
+			grammarName="de.davidmpaz.LogBook">
+		</projectTemplateProvider>
+	</extension>
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+			<newWizardShortcut id="de.davidmpaz.ui.wizard.LogBookNewProjectWizard"/>
+		</perspectiveExtension>
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<newWizardShortcut id="de.davidmpaz.ui.wizard.LogBookNewProjectWizard"/>
+		</perspectiveExtension>
+	</extension>
+	<extension
+		point="org.eclipse.ui.newWizards">
+		<category id="de.davidmpaz.ui.category" name="LogBook">
+		</category>
+		<wizard
+			category="de.davidmpaz.ui.category"
+			class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:org.eclipse.xtext.ui.wizard.template.TemplateNewFileWizard"
+			id="de.davidmpaz.ui.wizard.LogBookNewFileWizard"
+			name="LogBook File"
+			icon="icons/new_LogBook_file.png">
+		</wizard>
+	</extension>
+	<extension
+		point="org.eclipse.xtext.ui.fileTemplate">
+		<fileTemplateProvider
+			class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:de.davidmpaz.ui.wizard.LogBookFileTemplateProvider"
+			grammarName="de.davidmpaz.LogBook">
+		</fileTemplateProvider>
+	</extension>
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+			<newWizardShortcut id="de.davidmpaz.ui.wizard.LogBookNewFileWizard"/>
+		</perspectiveExtension>
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<newWizardShortcut id="de.davidmpaz.ui.wizard.LogBookNewFileWizard"/>
+		</perspectiveExtension>
+	</extension>
+	<extension
+		point="org.eclipse.ui.menus">
+		<menuContribution
+			allPopups="false"
+			locationURI="toolbar:org.eclipse.ui.main.toolbar">
+			<toolbar
+				id="de.davidmpaz.ui.toolbar">
+				<!--
+					For some reason the tooltip is not shown when hovering over the toolbar button
+					See also https://www.eclipse.org/forums/index.php/t/1079111/
+				-->
+				<command
+					commandId="org.eclipse.ui.newWizard"
+					tooltip="Create a new LogBook file">
+					<parameter
+						name="newWizardId"
+						value="de.davidmpaz.ui.wizard.LogBookNewFileWizard">
+					</parameter>
+				</command>
+			</toolbar>
+		</menuContribution>
+	</extension>
+	<!-- code mining -->
+	<extension point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
+		<codeMiningProvider
+			class="de.davidmpaz.ui.LogBookExecutableExtensionFactory:org.eclipse.jface.text.codemining.ICodeMiningProvider"
+			id="de.davidmpaz.LogBook.CodeMiningProvider"
+			label="LogBook Codemining">
+			<enabledWhen>
+				<with variable="editorInput">
+					<adapt type="org.eclipse.core.resources.IFile">
+						<test
+							property="org.eclipse.core.resources.contentTypeId"
+							value="de.davidmpaz.LogBook.contenttype">
+						</test>
+					</adapt>
+				</with>
+			</enabledWhen>
+		</codeMiningProvider>
 	</extension>
 </plugin>

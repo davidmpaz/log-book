@@ -4,3 +4,10 @@ Authorization: Basic {{ user }} {{ pass }}
 Content-Type: application/json
 
 ###
+
+GET http://{{ host }}/issues.json?user_id={{ user_id }}
+Authorization: Basic {{ user }} {{ pass }}
+Content-Type: application/json
+
+>> issues.json
+###

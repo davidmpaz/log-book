@@ -36,7 +36,7 @@ Workflow {
 			fileExtensions = "logtime"
 
 			serializer = {
-				generateStub = true
+				generateStub = false
 			}
 			formatter = {
 				generateStub = true
@@ -52,6 +52,16 @@ Workflow {
 			}
 			junitSupport = {
 				junitVersion = "5"
+			}
+			
+			fileWizard = {
+				generate = true
+				generateToolbarButton = true
+			}
+			
+			projectWizard = {
+				generate = true
+				pluginProject = false
 			}
 			
 			fragment = CodeMiningFragment {
