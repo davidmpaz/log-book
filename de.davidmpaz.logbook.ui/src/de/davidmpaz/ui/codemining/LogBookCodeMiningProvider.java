@@ -6,10 +6,12 @@ package de.davidmpaz.ui.codemining;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.impl.RuleCallImpl;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -20,8 +22,8 @@ import org.eclipse.xtext.util.IAcceptor;
 
 import com.google.inject.Inject;
 
-import de.davidmpaz.logBook.Date;
 import de.davidmpaz.logBook.LogEntry;
+import de.davidmpaz.logBook.Task;
 import de.davidmpaz.services.LogBookGrammarAccess;
 
 @SuppressWarnings("restriction")
@@ -56,17 +58,23 @@ public class LogBookCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 			ICompositeNode node = NodeModelUtils.findActualNodeFor(entry);
 			for(Iterator<INode> it = node.getAsTreeIterable().iterator(); it.hasNext();) {
 				INode child  = it.next();
-				if (child.getGrammarElement() instanceof Date) {
+				EObject element = child.getGrammarElement();
+				boolean isDate = (element instanceof RuleCallImpl) &&
+						((RuleCallImpl) element).getRule().getName().equals("Date");
+				if (isDate) {
 					float hours = getHours(entry);
 					String annotationHour = hours > 1 ? hours + " Hours" : hours + " Hour";
-					acceptor.accept(createNewLineContentCodeMining(child.getTotalOffset() + 1, annotationHour));
+					acceptor.accept(createNewLineContentCodeMining(child.getEndOffset() + 1, annotationHour));
 				}
 			}
 		}
 	}
 
 	private float getHours(LogEntry day) {
-		float result = 1;
+		float result = 0;
+		for (Task task : day.getTasks()) {
+			result += Float.parseFloat(task.getTime().getValue() + "." + task.getTime().getDecimal());
+		}
 		return result;
 	}
 }
